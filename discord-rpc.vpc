@@ -1,0 +1,81 @@
+//-----------------------------------------------------------------------------
+//	DISCORD-RPC.VPC
+//
+//	Project Script
+//-----------------------------------------------------------------------------
+
+$MacroRequired "PLATSUBDIR"
+
+// Moon: we assume that this is located in thirdparty\discord-rpc. change it to your needs
+$Macro SRCDIR		"..\.."
+$Macro GAMENAME 	"mod_hl2mp" [$HL2MP]
+$Macro GAMENAME 	"mod_tf" [$TF]
+
+// Moon: nothing special for this one, don't even bother
+$Macro GAMENAME 	"altersrc" [$ALTERSRC]
+
+$Macro OUTBINDIR	"$SRCDIR\..\game\$GAMENAME\bin"
+
+$Include "$SRCDIR\vpc_scripts\source_dll_base.vpc"
+
+$Configuration
+{
+	$General
+	{
+		// X360 version publishes to some other directory then copies here so we need to tell VPC to track this
+		// or else it won't know what depends on this project.
+		$AdditionalOutputFiles			"$SRCDIR\lib\public\$(TargetName).lib"	[$X360]
+	}
+	
+	$Compiler
+	{
+		$AdditionalIncludeDirectories	"$BASE;..\rapidjson\include,.\include"
+		$PreprocessorDefinitions    	"$BASE;DISCORD_DYNAMIC_LIB;DISCORD_BUILDING_SDK"
+		$PreprocessorDefinitions    	"$BASE;DISCORD_WINDOWS" [$WINDOWS]
+		$PreprocessorDefinitions    	"$BASE;DISCORD_LINUX" [$LINUXALL]
+		$PreprocessorDefinitions    	"$BASE;DISCORD_OSX" [$OSX_ALL]
+	}
+	
+	$Linker
+	{
+		// pc publishes the import library directly
+		$ImportLibrary					"$LIBPUBLIC\$(TargetName).lib"				[$WINDOWS]
+
+		// 360 publishes the import library via a post build step
+		$ImportLibrary					"$(TargetDir)\$(TargetName).lib"		[$X360]	
+
+		$ImportLibrary					"$LIBPUBLIC\$_IMPLIB_PREFIX$OUTBINNAME$_IMPLIB_EXT"	[$POSIX]
+
+		// 360 will auto generate a def file for this import library
+		$ModuleDefinitionFile			" "										[$X360]
+		$AdditionalOptions				"$BASE /AUTODEF:xbox\xbox.def"			[$X360]
+		$SystemLibraries                 "rt" [$LINUXALL]
+	}
+}
+
+$Project "discord-rpc"
+{
+	$Folder	"Source Files"
+	{
+		$File "src\discord_rpc.cpp"
+		$File "src\rpc_connection.cpp"
+		$File "src\serialization.cpp"
+		$File "src\connection_unix.cpp" [$LINUXALL||$OSX_ALL]
+		$File "src\discord_register_linux.cpp" [$LINUXALL]
+		$File "src\discord_register_osx.m" [$OSX_ALL]
+		$File "src\connection_win.cpp" [$WINDOWS]
+		$File "src\discord_register_win.cpp" [$WINDOWS]
+		$File "src\dllmain.cpp" [$WINDOWS]
+	}
+
+	$Folder	"Header Files"
+	{
+		$File "include\discord_register.h"
+		$File "include\discord_rpc.h"
+		$File "src\rpc_connection.h"
+		$File "src\serialization.h"
+		$File "src\connection.h"
+		$File "src\backoff.h"
+		$File "src\msg_queue.h"
+	}
+}

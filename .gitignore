@@ -3,3 +3,16 @@
 /thirdparty/
 .vs/
 .DS_Store
+/_vpc_/
+
+*.vpc.sentinel
+*.vpc_crc
+*.vpc_cache
+
+*.vcxproj
+*.vcxproj.*
+
+*_Release/
+*_Debug/
+[Rr]elease*/
+[Dd]ebug*/

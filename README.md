@@ -1,8 +1,8 @@
 # Discord RPC
 
-## Deprecation Notice
+## Source Notice
 
-This library has been deprecated in favor of Discord's GameSDK. [Learn more here](https://discordapp.com/developers/docs/game-sdk/sdk-starter-guide)
+This is a Discord RPC project fork, which adds support for the Source Engine, including **VPC** (Valve Project Creator) being used instead of CMake.
 
 ---
 
