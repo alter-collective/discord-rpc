@@ -8,11 +8,7 @@ $MacroRequired "PLATSUBDIR"
 
 // Moon: we assume that this is located in thirdparty\discord-rpc. change it to your needs
 $Macro SRCDIR		"..\.."
-$Macro GAMENAME 	"mod_hl2mp" [$HL2MP]
-$Macro GAMENAME 	"mod_tf" [$TF]
-
-// Moon: nothing special for this one, don't even bother
-$Macro GAMENAME 	"altersrc" [$ALTERSRC]
+$Macro GAMENAME 	"altersrc"
 
 $Macro OUTBINDIR	"$SRCDIR\..\game\$GAMENAME\bin"
 
